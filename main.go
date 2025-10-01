@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -14,6 +15,7 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/register", registerHandler)
+	http.HandleFunc("/forget-password", forgetPasswordHandler)
 	http.HandleFunc("/dashboard", dashboardHandler)
 
 	err := http.ListenAndServe(":3000", nil)
@@ -22,34 +24,53 @@ func main() {
 	}
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	tpl := template.Must(template.ParseFiles("templates/layouts/app.html", "templates/index.html"))
+func render(w http.ResponseWriter, name string, header bool, data interface{}) {
+	tpl := template.Must(template.ParseFiles(
+		"templates/layouts/app.html",
+		"templates/layouts/header.html",
+		"templates/"+name,
+	))
 
-	data := map[string]interface{}{
-		"Title": "Home Page",
+	fmt.Print(data)
+
+	content := struct {
+		Header bool
+		Data   interface{}
+	}{
+		Header: header,
+		Data:   data,
 	}
-	err := tpl.ExecuteTemplate(w, "app.html", data)
+
+	err := tpl.ExecuteTemplate(w, "app.html", content)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-	tpl := template.Must(template.ParseFiles("templates/layouts/app.html", "templates/login.html"))
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	//tpl := template.Must(template.ParseFiles("templates/layouts/app.html", "templates/layouts/header.html", "templates/index.html"))
 
-	err := tpl.ExecuteTemplate(w, "app.html", nil)
-	if err != nil {
-		return
-	}
+	render(w, "index.html", true, map[string]interface{}{
+		"Title": "Home Page",
+	})
+}
+
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	render(w, "login.html", false, map[string]interface{}{
+		"Title": "Login Page",
+	})
 }
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {
-	tpl := template.Must(template.ParseFiles("templates/layouts/app.html", "templates/register.html"))
+	render(w, "register.html", false, map[string]interface{}{
+		"Title": "Register Page",
+	})
+}
 
-	err := tpl.ExecuteTemplate(w, "app.html", nil)
-	if err != nil {
-		return
-	}
+func forgetPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	render(w, "forget-password.html", false, map[string]interface{}{
+		"Title": "Forget Password Page",
+	})
 }
 
 func dashboardHandler(w http.ResponseWriter, r *http.Request) {
