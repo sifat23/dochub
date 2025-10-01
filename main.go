@@ -11,35 +11,42 @@ func main() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	tpl, _ = tpl.ParseGlob("templates/*.html")
-
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/register", registerHandler)
 	http.HandleFunc("/dashboard", dashboardHandler)
 
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
 		return
 	}
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	err := tpl.ExecuteTemplate(w, "index.html", nil)
+	tpl := template.Must(template.ParseFiles("templates/layouts/app.html", "templates/index.html"))
+
+	data := map[string]interface{}{
+		"Title": "Home Page",
+	}
+	err := tpl.ExecuteTemplate(w, "app.html", data)
 	if err != nil {
-		return
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	err := tpl.ExecuteTemplate(w, "login.html", nil)
+	tpl := template.Must(template.ParseFiles("templates/layouts/app.html", "templates/login.html"))
+
+	err := tpl.ExecuteTemplate(w, "app.html", nil)
 	if err != nil {
 		return
 	}
 }
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {
-	err := tpl.ExecuteTemplate(w, "register.html", nil)
+	tpl := template.Must(template.ParseFiles("templates/layouts/app.html", "templates/register.html"))
+
+	err := tpl.ExecuteTemplate(w, "app.html", nil)
 	if err != nil {
 		return
 	}

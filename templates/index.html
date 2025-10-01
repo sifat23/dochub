@@ -1,36 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Knowledge Base</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap 5.3 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
+{{ define "body" }}
+    <div class="floating-section">
+        <div class="wrapper">
+            <a href="login" class="btn btn-transparent text-white outline-accent">Sign in</a>
+            <a href="register" class="btn btn-accent">Get started</a>
+        </div>
+    </div>
     <div class="container py-5">
+
+
+
         <div class="text-center mb-5">
             <h1 class="">Knowledge Base</h1>
             <h5 class="text-white mt-4">Search through documentation, commands, and prompts</h5>
         </div>
-        
+
         <div class="search-container mb-5">
             <div class="input-group">
                 <input type="text" aria-label="Search for articles" class="form-control search-input border-end-0" placeholder="Search anything..." id="searchInput">
             </div>
         </div>
-        
+
         <div id="resultsContainer">
             <!-- Results will be populated here -->
             <div class="text-center empty-state py-5">
@@ -39,139 +28,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Sample data (would normally come from a database) -->
-    <script>
-        const knowledgeBase = [
-            {
-                title: "Git Commit",
-                type: "command",
-                content: "git commit -m \"Your commit message here\"",
-                tags: ["git", "version control"]
-            },
-            {
-                title: "Docker Run",
-                type: "command",
-                content: "docker run -d -p 8080:80 --name my-container nginx",
-                tags: ["docker", "containers"]
-            },
-            {
-                title: "JavaScript Array Map",
-                type: "documentation",
-                content: "The map() method creates a new array populated with the results of calling a provided function on every element in the calling array.\n\nExample:\nconst numbers = [1, 2, 3];\nconst doubled = numbers.map(num => num * 2);\n// doubled is [2, 4, 6]",
-                tags: ["javascript", "arrays"]
-            },
-            {
-                title: "Python Virtual Environment",
-                type: "documentation",
-                content: "To create a Python virtual environment:\n\npython -m venv myenv\n\nTo activate on Windows:\nmyenv\\Scripts\\activate\n\nTo activate on Unix/MacOS:\nsource myenv/bin/activate",
-                tags: ["python", "environment"]
-            },
-            {
-                title: "System Information",
-                type: "command",
-                content: "uname -a  # Show system information\n\nlsb_release -a  # Show Linux distribution info\n\ndf -h  # Show disk space usage\n\nfree -h  # Show memory usage",
-                tags: ["linux", "system"]
-            },
-            {
-                title: "SSH Connection",
-                type: "prompt",
-                content: "ssh username@hostname -p port_number\n\nExample:\nssh john@example.com -p 2222",
-                tags: ["ssh", "networking"]
-            }
-        ];
-
-        $(document).ready(function() {
-            // Search functionality
-            function performSearch(query) {
-                const resultsContainer = $('#resultsContainer');
-                resultsContainer.empty();
-                
-                if (!query) {
-                    resultsContainer.html(`
-                        <div class="text-center empty-state py-5">
-                            <i class="bi bi-search" style="font-size: 3rem;"></i>
-                            <p class="mt-3">Your search results will appear here</p>
-                        </div>
-                    `);
-                    return;
-                }
-                
-                const lowerQuery = query.toLowerCase();
-                const results = knowledgeBase.filter(item => 
-                    item.title.toLowerCase().includes(lowerQuery) || 
-                    item.content.toLowerCase().includes(lowerQuery) ||
-                    item.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
-                );
-                
-                if (results.length === 0) {
-                    resultsContainer.html(`
-                        <div class="text-center empty-state py-5">
-                            <i class="bi bi-exclamation-circle" style="font-size: 3rem;"></i>
-                            <p class="mt-3">No results found for "${query}"</p>
-                        </div>
-                    `);
-                    return;
-                }
-                
-                results.forEach((result, index) => {
-                    const delayClass = `delay-${(index % 3) + 1}`;
-                    resultsContainer.append(`
-                        <div class="result-card mb-4 p-4 ${delayClass}">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="mb-0">${result.title}</h5>
-                                <span class="badge bg-dark result-type">${result.type}</span>
-                            </div>
-                            <div class="result-content">${result.content}</div>
-                            <div class="mt-3">
-                                ${result.tags.map(tag => `<span class="badge bg-secondary me-1">${tag}</span>`).join('')}
-                            </div>
-                        </div>
-                    `);
-                });
-            }
-            
-            $('#searchButton').click(function() {
-                performSearch($('#searchInput').val());
-            });
-            
-            $('#searchInput').keypress(function(e) {
-                if (e.which === 13) {
-                    performSearch($('#searchInput').val());
-                }
-            });
-            
-            // Initial random results display
-            function showRandomResults() {
-                const shuffled = [...knowledgeBase].sort(() => 0.5 - Math.random());
-                const randomResults = shuffled.slice(0, 3);
-                
-                const resultsContainer = $('#resultsContainer');
-                resultsContainer.empty();
-                
-                randomResults.forEach((result, index) => {
-                    const delayClass = `delay-${(index % 3) + 1}`;
-                    resultsContainer.append(`
-                        <div class="result-card mb-4 p-4 ${delayClass}">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="mb-0">${result.title}</h5>
-                                <span class="badge bg-dark result-type">${result.type}</span>
-                            </div>
-                            <div class="result-content">${result.content}</div>
-                            <div class="mt-3">
-                                ${result.tags.map(tag => `<span class="badge bg-secondary me-1">${tag}</span>`).join('')}
-                            </div>
-                        </div>
-                    `);
-                });
-            }
-            
-            // Show random results on page load
-            showRandomResults();
-        });
-    </script>
-    
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{{ end }}

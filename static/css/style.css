@@ -1,11 +1,17 @@
 :root {
     --color-bg-dark: #111827;
     --color-bg-darker: #0a0a0a;
+
     --color-text-primary: #e0e0e0;
     --color-text-secondary: #a0a0a0;
-    --color-accent-color: #6c5ce7;
-    --color-border-color: #374151;
+
+    --color-accent: #6c5ce7;
+    --color-accent-hover: #5745ca;
+
+    --color-border: #374151;
+
     --color-input-bg: #1F2937;
+
     --color-placeholder: #6B7280;
 }
 
@@ -14,7 +20,6 @@ body {
     color: var(--color-text-primary);
     font-family: "Roboto", sans-serif;
     min-height: 100vh;
-    padding: 2rem;
     transition: all 0.3s ease;
 }
 
@@ -29,20 +34,65 @@ p {
     margin-top: 5px;
 }
 
+input {
+    background-color: var(--color-input-bg) !important;
+    border: 1px solid var(--color-border) !important;
+    color: var(--color-text-primary) !important;
+    padding: 10px 15px !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-input-bg) inset !important;
+    -webkit-text-fill-color: var(--color-text-primary) !important;
+    transition: background-color 5000s ease-in-out 0s; /* Prevent flash */
+}
+
 input::placeholder {
     color: var(--color-placeholder) !important; /* Sets the placeholder color to red */
     opacity: 1; /* Ensures full opacity, as some browsers might default to lower opacity */
 }
 
+input:focus {
+    border-color: var(--color-accent) !important;
+    background-color: var(--color-input-bg) !important;
+    color: var(--color-text-primary) !important;
+}
+
+input[type="checkbox"]:focus {
+    outline: none; /* Removes the default browser outline */
+    border-color: var(--color-accent) !important; /* Sets the border color when the checkbox is focused */
+    box-shadow: none !important;
+}
+
+.simple-link {
+    color: var(--color-accent) !important;
+    text-decoration: none;
+    transition: color 0.3s ease, text-decoration-color 0.3s ease;
+}
+.simple-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+}
 
 .text-white {
     color: var(--color-text-primary);
 }
+.text-accent {
+    color: var(--color-accent);
+}
+
 .bg-secondary {
     background-color: var(--color-input-bg) !important;
     color: var(--color-placeholder) !important;
 }
-
 
 .card {
     max-width: 620px;
@@ -50,6 +100,10 @@ input::placeholder {
     padding: 16px;
     border: 1px solid lightgray;
     border-radius: 16px;
+}
+
+.outline-accent:hover {
+    border: 1px solid var(--color-accent) !important;
 }
 
 .card p:last-child {
@@ -62,23 +116,38 @@ input::placeholder {
 }
 
 .search-input {
-    background-color: var(--color-input-bg);
-    border: 1px solid var(--color-border-color);
-    color: var(--color-text-primary);
     padding: 15px 20px;
     border-radius: 50px;
     transition: all 0.3s ease;
 }
 
-.search-input:focus {
-    border-color: var(--color-accent-color) !important;
-    background-color: var(--color-input-bg) !important;
-    color: var(--color-text-primary) !important;
+.btn-accent {
+    color: #fff;
+    background-color: var(--color-accent);
+    font-weight: bold;
+    border-color: var(--color-accent);
+
+
+    --bs-btn-hover-border-color: #0a58ca;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0a58ca;
+    --bs-btn-active-border-color: #0a53be;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #0d6efd;
+    --bs-btn-disabled-border-color: #0d6efd;
+}
+
+.btn-accent:hover {
+    background-color: var(--color-accent-hover) !important;
+    border-color: var(--color-accent-hover) !important;
+    box-shadow: none;
 }
 
 .result-card {
     background-color: var(--color-bg-dark);
-    border: 1px solid var(--color-border-color);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     transition: all 0.3s ease;
     opacity: 0;
@@ -87,12 +156,12 @@ input::placeholder {
 }
 
 .result-card:hover {
-    border-color: var(--color-accent-color);
+    border-color: var(--color-accent);
     transform: translateY(-2px);
 }
 
 .result-type {
-    color: var(--color-accent-color);
+    color: var(--color-accent);
     font-weight: 600;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -109,6 +178,24 @@ input::placeholder {
     overflow-x: auto;
 }
 
+.submit-btn {
+    padding: 10px 15px;
+    font-size: 18px;
+}
+
+.floating-section {
+    position: relative;
+}
+
+.floating-section .wrapper {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    right: 50px;
+    top: 25px;
+}
+
+
 @keyframes fadeIn {
     to {
         opacity: 1;
@@ -116,10 +203,17 @@ input::placeholder {
     }
 }
 
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
+.delay-1 {
+    animation-delay: 0.1s;
+}
 
+.delay-2 {
+    animation-delay: 0.2s;
+}
+
+.delay-3 {
+    animation-delay: 0.3s;
+}
 
 
 .empty-state {
