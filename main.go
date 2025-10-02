@@ -1,22 +1,26 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 )
 
 var tpl *template.Template
+var errors []string
 
 func main() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/register", registerHandler)
-	http.HandleFunc("/forget-password", forgetPasswordHandler)
-	http.HandleFunc("/dashboard", dashboardHandler)
+	http.HandleFunc("/", methodHandler(http.MethodGet, indexHandler))
+	http.HandleFunc("/login", methodHandler(http.MethodGet, loginHandler))
+	http.HandleFunc("/register", methodHandler(http.MethodGet, registerHandler))
+	http.HandleFunc("/forget-password", methodHandler(http.MethodGet, forgetPasswordHandler))
+
+	//http.HandleFunc("/dashboard", dashboardHandler)
+	//
+	http.HandleFunc("/sign-in", methodHandler(http.MethodPost, signInHandler))
+	http.HandleFunc("/sign-up", methodHandler(http.MethodPost, signUpHandler))
 
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
@@ -25,13 +29,16 @@ func main() {
 }
 
 func render(w http.ResponseWriter, name string, header bool, data interface{}) {
-	tpl := template.Must(template.ParseFiles(
-		"templates/layouts/app.html",
-		"templates/layouts/header.html",
-		"templates/"+name,
-	))
+	funcMap := template.FuncMap{
+		"old": old, // register your helper
+	}
 
-	fmt.Print(data)
+	tpl := template.Must(
+		template.New("").Funcs(funcMap).ParseFiles(
+			"templates/layouts/app.html",
+			"templates/layouts/header.html",
+			"templates/"+name,
+		))
 
 	content := struct {
 		Header bool

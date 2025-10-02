@@ -8,29 +8,43 @@
             </div>
 
             <!-- Signup Form -->
-            <form action="#" method="POST">
+            <form action="/sign-up" method="POST">
                 <div class="mb-3">
                     <label for="name" class="form-label"><strong>Full Name</strong></label>
-                    <input id="name" name="name" type="text" autocomplete="name" required
+                    <input id="name" name="name" type="text"
+                           value="{{ old "name" .Data.msg }}"
                            class="form-control" placeholder="Full Name">
+                    {{ with .Data.msg.Errors.Name }}
+                        <small class="text-danger">{{ . }}</small>
+                    {{ end }}
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label"><strong>Email address</strong></label>
-                    <input id="email" name="email" type="email" autocomplete="email" required
+                    <input id="email" name="email" type="email"
+                           value="{{ old "email" .Data.msg }}"
                            class="form-control" placeholder="Email address">
+                    {{ with .Data.msg.Errors.Email }}
+                        <small class="text-danger">{{ . }}</small>
+                    {{ end }}
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label"><strong>Password</strong></label>
-                    <input id="password" name="password" type="password" autocomplete="new-password" required
+                    <input id="password" name="password" type="password"
                            class="form-control" placeholder="Password">
+                    {{ with .Data.msg.Errors.Password }}
+                        <small class="text-danger">{{ . }}</small>
+                    {{ end }}
                 </div>
 
                 <div class="mb-5">
                     <label for="password" class="form-label"><strong>Confirm Password</strong></label>
-                    <input id="password" name="password" type="password" autocomplete="new-password" required
-                           class="form-control" placeholder="Password">
+                    <input id="password" name="confirm_password" type="password"
+                           class="form-control" placeholder="Confirm Password">
+                    {{ with .Data.msg.Errors.Confirm }}
+                        <small class="text-danger">{{ . }}</small>
+                    {{ end }}
                 </div>
 
                 <div class="d-grid">
@@ -42,7 +56,7 @@
 
             <div class="text-center mt-3">
                 Already have an account?
-                <a href="login" class="fw-semibold text-decoration-none simple-link">
+                <a href="/login" class="fw-semibold text-decoration-none simple-link">
                     Sign in
                 </a>
             </div>
