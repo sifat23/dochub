@@ -1,12 +1,15 @@
 package main
 
-import "net/http"
+import (
+	"dochub/bin"
+	"net/http"
+	"strings"
+)
 
 func methodHandler(method string, h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if len(errors) > 0 {
-			// Combine all errors into a single string
-			http.Error(w, "Errors: "+errors[0], http.StatusBadRequest)
+		if len(bin.Errors) > 0 {
+			http.Error(w, strings.Join(bin.Errors, ", "), http.StatusBadRequest)
 			return
 		}
 
