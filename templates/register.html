@@ -7,6 +7,18 @@
                 <h6 class="text-secondary">Join our community today</h6>
             </div>
 
+            {{ with .Data.success }}
+                <div class="floating-alert success-alert">
+                    {{ . }}
+                </div>
+            {{ end }}
+
+            {{ with .Data.error }}
+                <div class="floating-alert error-alert">
+                    {{ . }}
+                </div>
+            {{ end }}
+
             <!-- Signup Form -->
             <form action="/sign-up" method="POST">
                 <div class="mb-3">

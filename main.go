@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dochub/Controllers"
+	"dochub/bin/routes"
 	"dochub/lib"
 	"net/http"
 )
@@ -12,15 +12,7 @@ func main() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	http.HandleFunc("/", methodHandler(http.MethodGet, Controllers.IndexHandler))
-	http.HandleFunc("/login", methodHandler(http.MethodGet, Controllers.LoginHandler))
-	http.HandleFunc("/register", methodHandler(http.MethodGet, Controllers.RegisterHandler))
-	http.HandleFunc("/forget-password", methodHandler(http.MethodGet, Controllers.ForgetPasswordHandler))
-
-	//http.HandleFunc("/dashboard", dashboardHandler)
-	//
-	http.HandleFunc("/sign-in", methodHandler(http.MethodPost, Controllers.SignInHandler))
-	http.HandleFunc("/sign-up", methodHandler(http.MethodPost, Controllers.SignUpHandler))
+	routes.Routes()
 
 	errHTTP := http.ListenAndServe(":3000", nil)
 	if errHTTP != nil {

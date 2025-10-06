@@ -4,15 +4,16 @@ import (
 	"dochub/bin"
 	"dochub/bin/models"
 	"dochub/lib"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
 )
 
+var pageTitle = "Register Page"
+
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	lib.Render(w, "register.html", false, map[string]interface{}{
-		"Title": "Register Page",
+		"Title": pageTitle,
 	})
 }
 
@@ -41,7 +42,7 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		//os.Exit(1)
 
 		lib.Render(w, "register.html", false, map[string]interface{}{
-			"Title": "Home Page",
+			"Title": pageTitle,
 			"msg":   msg,
 		})
 		return
@@ -67,14 +68,21 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 
 	result, err := bin.Db.Exec("INSERT INTO users (name, email, password, status, created_at) VALUES (?, ?, ?, ?, ?)", user.Name, user.Email, user.Password, user.Status, user.CreatedAt)
 	if err != nil {
-		log.Printf("add User: %v", err)
+		lib.Render(w, "register.html", false, map[string]interface{}{
+			"Title": pageTitle,
+			"error": err,
+		})
 		return
 	}
 
 	id, _ := result.LastInsertId()
 	rows, _ := result.RowsAffected()
-	fmt.Println("Inserted ID:", id, "Rows:", rows)
 
-	fmt.Printf("%#v\n", "lolo : ", result) // raw Go representation
-	//os.Exit(1)
+	lib.Render(w, "register.html", false, map[string]interface{}{
+		"Title":   pageTitle,
+		"success": "Successfully Register User",
+		"id":      id,
+		"rows":    rows,
+	})
+	return
 }

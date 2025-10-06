@@ -8,6 +8,10 @@
     --color-accent: #6c5ce7;
     --color-accent-hover: #5745ca;
 
+    --color-success:  #00b894;
+
+    --color-error: #d63031;
+
     --color-border: #374151;
 
     --color-input-bg: #1F2937;
@@ -77,6 +81,7 @@ input[type="checkbox"]:focus {
     text-decoration: none;
     transition: color 0.3s ease, text-decoration-color 0.3s ease;
 }
+
 .simple-link:hover {
     text-decoration: underline;
     text-decoration-color: var(--color-accent);
@@ -85,6 +90,7 @@ input[type="checkbox"]:focus {
 .text-white {
     color: var(--color-text-primary);
 }
+
 .text-accent {
     color: var(--color-accent);
 }
@@ -208,6 +214,23 @@ input[type="checkbox"]:focus {
 .logo-holder a {
     text-decoration: none;
     color: var(--color-accent);
+}
+
+.floating-alert {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 5px 10px;
+    border-radius: 4px
+}
+
+.success-alert {
+    background: var(--color-success);
+    color: white;
+}
+.error-alert {
+    background: var(--color-error);
+    color: white;
 }
 
 
