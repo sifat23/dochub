@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DucHub Registration Confirmation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .email-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        .email-body {
+            padding: 30px;
+            line-height: 1.6;
+        }
+        .email-footer {
+            background-color: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 25px 0;
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<center>
+    <table class="email-container" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <!-- Header -->
+        <tr>
+            <td class="email-header">
+                <h1 style="margin: 0; font-size: 28px; font-weight: 700;">Welcome to DucHub!</h1>
+                <p style="margin: 10px 0 0; opacity: 0.9;">Your creative journey begins now</p>
+            </td>
+        </tr>
+
+        <!-- Body Content -->
+        <tr>
+            <td class="email-body">
+                <h2 style="margin: 0 0 20px; color: #1e293b; text-align: center;">Registration Confirmed!</h2>
+
+                <p style="text-align: center; margin: 0 0 25px;">
+                    Thank you for joining DucHub! We're thrilled to have you as part of our creative community.
+                </p>
+                <p>
+                    To active your account please click the button of follow the link.
+                </p>
+
+                <center>
+                    <a href="{{ .Link }}" class="button">Active Account</a>
+                    <br/>
+                    {{ .Link }}
+                </center>
+
+
+                <p style="text-align: center; margin: 0; color: #64748b;">
+                    Need help? Our support team is here for you at
+                    <a href="mailto:support@duchub.com" style="color: #667eea; text-decoration: none;">support@duchub.com</a>
+                </p>
+            </td>
+        </tr>
+
+        <!-- Footer -->
+{{/*        <tr>*/}}
+{{/*            <td class="email-footer">*/}}
+{{/*                <p style="margin: 0 0 10px;">© 2024 Duchub. All rights reserved.</p>*/}}
+{{/*                <p style="margin: 0 0 10px;">*/}}
+{{/*                    <a href="#" style="color: #64748b; text-decoration: none; margin: 0 10px;">Privacy Policy</a> •*/}}
+{{/*                    <a href="#" style="color: #64748b; text-decoration: none; margin: 0 10px;">Terms of Service</a> •*/}}
+{{/*                    <a href="#" style="color: #64748b; text-decoration: none; margin: 0 10px;">Unsubscribe</a>*/}}
+{{/*                </p>*/}}
+{{/*                <p style="margin: 0;">123 Creative Street, Innovation City</p>*/}}
+{{/*            </td>*/}}
+{{/*        </tr>*/}}
+    </table>
+</center>
+</body>
+</html>

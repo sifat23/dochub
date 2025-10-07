@@ -3,9 +3,11 @@ package Controllers
 import (
 	"dochub/bin"
 	"dochub/bin/models"
+	"dochub/bin/services"
 	"dochub/lib"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -18,10 +20,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SignUpHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-		return
-	}
+	lib.LoadENV() //to load env file
 
 	err := r.ParseForm()
 	if err != nil {
@@ -37,10 +36,6 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if msg.SignUpFormValidate() == false {
-
-		//fmt.Printf("%#v\n", msg) // raw Go representation
-		//os.Exit(1)
-
 		lib.Render(w, "register.html", false, map[string]interface{}{
 			"Title": pageTitle,
 			"msg":   msg,
@@ -57,6 +52,36 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		Status:    0,
 		CreatedAt: &now,
 		UpdatedAt: nil,
+	}
+
+	checkExistToken, err := GetUserToken(user)
+	if err != nil {
+		log.Println("Error getting user token:", err)
+		return
+	}
+
+	newToken := services.GenerateToken(user)
+
+	if checkExistToken == nil {
+		storeToken, _ := StoreUserToken(*newToken)
+		link := os.Getenv("APP_MAIN_URL") + "verification?token=" + storeToken.Token + "&email=" + storeToken.Email
+		SendConfirmationMail(map[string]interface{}{
+			"Link":    link,
+			"Email":   user.Email,
+			"Subject": "Account Confirmation Email - DocHub",
+		})
+	} else {
+		deleteToken := DeleteToken(*checkExistToken)
+		if deleteToken {
+			storeToken, _ := StoreUserToken(*newToken)
+			link := os.Getenv("APP_MAIN_URL") + "verification?token=" + storeToken.Token + "&email=" + storeToken.Email
+			SendConfirmationMail(map[string]interface{}{
+				"Link":    link,
+				"Email":   user.Email,
+				"Subject": "Account Confirmation Email - DocHub",
+			})
+		}
+
 	}
 
 	if bin.Db == nil {
@@ -85,4 +110,8 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		"rows":    rows,
 	})
 	return
+}
+
+func StoreUser() {
+
 }

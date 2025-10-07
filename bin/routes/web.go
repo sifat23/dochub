@@ -27,6 +27,7 @@ func Routes() {
 	http.HandleFunc("/login", methodHandler(http.MethodGet, Controllers.LoginHandler))
 	http.HandleFunc("/register", methodHandler(http.MethodGet, Controllers.RegisterHandler))
 	http.HandleFunc("/forget-password", methodHandler(http.MethodGet, Controllers.ForgetPasswordHandler))
+	http.HandleFunc("/verification", methodHandler(http.MethodGet, Controllers.UserVerify))
 
 	//http.HandleFunc("/dashboard", dashboardHandler)
 	//

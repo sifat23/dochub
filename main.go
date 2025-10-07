@@ -3,6 +3,7 @@ package main
 import (
 	"dochub/bin/routes"
 	"dochub/lib"
+	"fmt"
 	"net/http"
 )
 
@@ -14,11 +15,12 @@ func main() {
 
 	routes.Routes()
 
+	fmt.Println("hello")
+
 	errHTTP := http.ListenAndServe(":3000", nil)
 	if errHTTP != nil {
 		return
 	}
-
 }
 
 //
